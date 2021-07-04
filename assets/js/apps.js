@@ -15,7 +15,8 @@ limit = 10
 // displayGif function re-renders the HTML to display the appropriate content
 function displayGif(){
     var gif = $(this).attr("data-name");
-    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + gif + "&api_key=c0rIociiXYSeQgyzarZ3tNrThpgsMQms"
+    console.log(`displayGif gif: ${gif}`);
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + gif + "&api_key=c0rIociiXYSeQgyzarZ3tNrThpgsMQms&limit=5";
 
 //creating an ajax call for the specific gifs button being clicked
 $.ajax({
@@ -28,7 +29,7 @@ $.ajax({
         var images = $("<img>");
         images.attr("src", response.data[j].images.original_still.url);
         images.attr("data-still", response.data[j].images.original_still.url);
-        images.attr("data-animate", response.data[j].images.original_still.url);
+        images.attr("data-animate", response.data[j].images.original.url);
         images.attr("data-state", "still");
         images.attr("class", "gif");
         displayDiv.prepend(images);
@@ -36,7 +37,7 @@ $.ajax({
         console.log(response);
         var pRating = $("<p>").text("Rating: " + rating);
         displayDiv.append(pRating)
-        $("#my-gifs").append(displayDiv);
+        $("#my-gifs").prepend(displayDiv);
     }
 });
 }
@@ -46,7 +47,7 @@ function renderButtons() {
     $("#my-gifs").empty();
     for (var i =0; i < firstButtons.length; i++){
         var a =$("<button>");
-        a.addClass("gif");
+        a.addClass("metro-button");
         a.attr("data-name",  firstButtons[i]);
         a.text(firstButtons[i]);
         $("#my-gifs").prepend(a);
@@ -78,7 +79,7 @@ function imageState(){
   }
 
 
-$(document).on("click", ".gif", displayGif);
+$(document).on("click", ".metro-button", displayGif);
 $(document).on("click", ".gif", imageState);
 
 renderButtons();
